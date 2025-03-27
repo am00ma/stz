@@ -1,6 +1,7 @@
 #pragma once
 
-#include <stdio.h> // fprintf, stderr
+#include <stdio.h>  // fprintf, stderr
+#include <stdlib.h> // EXIT_FAILURE
 
 /* ---------------------------------------------------------------------------
  * Print debugging
@@ -37,3 +38,11 @@
  * ------------------------------------------------------------------------- */
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
+
+/* ---------------------------------------------------------------------------
+ * Generics
+ * ------------------------------------------------------------------------- */
+/* From https://github.com/glouw/ctl */
+#define CAT(a, b)          a##b
+#define PASTE(a, b)        CAT(a, b)
+#define JOIN(prefix, name) PASTE(prefix, PASTE(_, name))
