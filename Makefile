@@ -3,7 +3,7 @@
 PACKAGE  = stz
 VERSION  = 0.0.1
 
-lib_libs   = -ltermbox2 -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL_FontCache -ljack -lsndfile -lm
+lib_libs   =
 prefix     = /usr/local
 extra_dist =  Makefile README.md
 

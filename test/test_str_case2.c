@@ -6,10 +6,10 @@
 
 constexpr isize PERM_CAPACITY = 128;
 
-str parse_and_format(str src, Arena temp, Arena* perm)
+Str parse_and_format(Str src, Arena temp, Arena* perm)
 {
     // Reserve PERM_CAPACITY so str_fmt can use rest
-    str tmp = str_new(PERM_CAPACITY, &temp);
+    Str tmp = str_new(PERM_CAPACITY, &temp);
 
     // Copy source string ( can only be done before using temp_loop )
     memcpy(tmp.buf, src.buf, src.len);
@@ -26,7 +26,7 @@ str parse_and_format(str src, Arena temp, Arena* perm)
             Arena temp_loop = temp;
 
             // Parse (note -> using new temp for each loop)
-            str found = str_fmt(&temp_loop, "Found l: %d\n", i); // uses STR_MAXLEN = 1024
+            Str found = str_fmt(&temp_loop, "Found l: %d\n", i); // uses STR_MAXLEN = 1024
 
             // Store
             memcpy(&tmp.buf[tmp.len], found.buf, found.len);
@@ -35,7 +35,7 @@ str parse_and_format(str src, Arena temp, Arena* perm)
     }
 
     // Copy to permanent arena
-    str dst = str_copy(tmp, perm);
+    Str dst = str_copy(tmp, perm);
 
     return dst;
 }
@@ -47,9 +47,9 @@ int main()
     // Allocate just enough temp arena
     Arena temp = arena_new(STR_MAXLEN + PERM_CAPACITY);
 
-    str src = str("hello hi, alles good?\n");
+    Str src = Str("hello hi, alles good?\n");
 
-    str dst = parse_and_format(src, temp, &perm);
+    Str dst = parse_and_format(src, temp, &perm);
     printf("%.*s", pstr(dst));
 
     arena_print("After parse_and_format: perm:", &perm);

@@ -6,31 +6,35 @@
 typedef struct {
     char* buf;
     isize len;
-} str;
+} Str;
 
 // Create new null-terminated string from literal
-#define str(s)                                                                                                         \
-    (str) { s, lengthof(s) }
+#define Str(s)                                                                                                         \
+    (Str) { s, lengthof(s) }
 
 // For printing %.*s
 #define pstr(s) (int)s.len, s.buf
 
 // Allocate space for a new string
-str str_new(isize len, Arena* a);
+Str str_new(isize len, Arena* a);
 
 // Store null-terminated string in arena
-str str_store(char* s, Arena* a);
+Str str_store(char* s, Arena* a);
 
 // Copy string
-str str_copy(str src, Arena* a);
+Str str_copy(Str src, Arena* a);
 
 // Get c style null terminated string of maybe unterminated str
-char* str_c(str s, Arena* a);
+char* str_c(Str s, Arena* a);
 
 // Store formatted string in the arena (modifies arena to reclaim unused space)
-str str_fmt(Arena* a, char const* fmt, ...);
+Str str_fmt(Arena* a, char const* fmt, ...);
 
+// Used by str_fmt as max allowed string length
 constexpr int STR_MAXLEN = 1024;
 
+// Alternative to str_fmt for smaller/bigger strings
+Str str_fmtn(Arena* a, isize len, char const* fmt, ...);
+
 // Check if equal to string literal
-bool str_equal(str* s, char* c);
+bool str_equal(Str* s, char* c);
