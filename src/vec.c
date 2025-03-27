@@ -1,6 +1,6 @@
-#pragma once
+#include "vec.h"
 
-#define VEC_HEADER 1
+#define VEC_IMPLEMENTATION 1
 
 #define T i32
 #include "vec-ctl.h"
@@ -11,4 +11,4 @@
 #define T f64
 #include "vec-ctl.h"
 
-#undef VEC_HEADER
+#undef VEC_IMPLEMENTATION
