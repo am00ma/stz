@@ -1,3 +1,8 @@
+/* Growing two arrays dynamically
+ *
+ * TODO: Can we avoid copy, yet keep dynamic nature?
+ * */
+
 #include "arena.h"
 #include "range.h"
 #include "types.h"
@@ -72,11 +77,6 @@ void pair_print(pair* p)
 
 int main()
 {
-    /* Growing two arrays dynamically
-     *
-     * TODO: Can we avoid copy, yet keep dynamic nature?
-     * */
-
     // Create arena
     Arena perm1 = arena_new(1024);
     Arena perm2 = arena_new(1024);

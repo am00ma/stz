@@ -1,3 +1,13 @@
+/* Nested structs that need initialization
+ *
+ * We want to allocate nested objects on heap inside function and
+ * return the reference to outer scope, with all references valid
+ *
+ * Function: `type type_new(Arena *a) { ...; x.member = member_new(a); ...};`
+ * Call    : `type x = type_new(a); assert (x); assert (x.member);`
+ *
+ */
+
 #include "arena.h"
 #include "range.h"
 #include <stdio.h>
@@ -23,9 +33,9 @@ str str_new(i32 num, Arena* perm)
 
 vstr vstr_new(i32 num, Arena* perm)
 {
-    str* strs = new (perm, str, num);
+    str* strs = new (perm, str, num); // 'Outer' allocation
 
-    RANGE(j, num) strs[j] = str_new(num, perm);
+    RANGE(j, num) strs[j] = str_new(num, perm); // 'Inner' allocation
 
     RANGE(j, num) RANGE(i, num) strs[j].buf[i] = 65 + i + j;
 
@@ -36,10 +46,6 @@ void vstr_print(vstr x) { RANGE(j, x.n) printf("%d: %.*s\n", j, (int)x.x[j].len,
 
 int main()
 {
-    /* Nested structs that need initialization
-     *
-     * We want to allocate nested objects on heap inside function and
-     * return the reference within the permanent arena */
 
     // Create arena
     Arena perm = arena_new(512);

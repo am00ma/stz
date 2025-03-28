@@ -1,3 +1,5 @@
+/* Using a temporary arena per frame */
+
 #include "arena.h"
 #include "range.h"
 #include "types.h"
@@ -19,8 +21,6 @@ void process_frame(i32 i, Arena temp)
 
 int main()
 {
-    /* Using a temporary arena per frame */
-
     // Create arena
     Arena temp = arena_new(1024);
 

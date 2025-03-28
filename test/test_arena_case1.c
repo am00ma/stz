@@ -1,3 +1,16 @@
+/*
+ * Usual case, we want to allocate objects on heap inside function and
+ * return a valid reference to the outer scope
+ *
+ * Is this true?
+ *   As we cannot access the stack of the function, it HAS to either return a
+ *   reference on the heap, or return the struct by copy
+ *
+ * Function: `type type_new(Arena *a);`
+ * Call    : `type x = type_new(a); assert (x);`
+ *
+*/
+
 #include "arena.h"
 #include "range.h"
 #include <stdio.h>
@@ -45,9 +58,6 @@ void vf32_print(vf32 x)
 
 int main()
 {
-    // Usual case, we want to allocate objects on heap inside function and
-    // return the reference within the permanent arena
-
     // Create arena
     Arena perm = arena_new(256);
 

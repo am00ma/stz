@@ -1,3 +1,6 @@
+/*
+ * Return string from function, get null terminated string
+ */
 #include "arena.h"
 #include "str.h"
 #include <stdio.h>
@@ -20,7 +23,8 @@ int main()
     arena_print("After store", &perm); // Used: 6+1 ("hello\n\0")
 
     // Normal c string with null terminator
-    printf("%s", str_c(a, &perm)); // Needs to be accessible outsize
+    Arena temp = perm;             // Use a temporary arena for this
+    printf("%s", str_c(a, &temp)); // Needs to be accessible outsize
 
     arena_print("Final", &perm); // Used: 6+1 * 2 ("hello\n\0")
 

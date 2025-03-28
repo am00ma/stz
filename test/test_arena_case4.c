@@ -1,3 +1,5 @@
+/* Parsing a file, and growing an array dynamically */
+
 #include "arena.h"
 #include "range.h"
 #include "types.h"
@@ -60,8 +62,6 @@ void print_matches(matches m) { RANGE(i, m.n) printf("%d: %c\n", m.m[i].i, m.m[i
 
 int main()
 {
-    /* Parsing a file, and growing an array dynamically */
-
     // Create arena
     Arena perm = arena_new(1024);
     Arena temp = arena_new(1024);

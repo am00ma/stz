@@ -1,3 +1,9 @@
+/* Read files and reclaim space on error
+ *
+ * Ideally, we will return error values as well, but assume return string of
+ * length zero means error is a valid assumption in this case.
+ * */
+
 #include "arena.h"
 #include "macros.h"
 #include "range.h"
@@ -35,12 +41,6 @@ str read_file(bool should_err, Arena* perm)
 
 int main()
 {
-    /* Reading files
-     *
-     * Ideally, we will return error values as well, but assume return string of
-     * length zero means error is a valid assumption in this case.
-     * */
-
     // Create arena
     Arena perm = arena_new(1024);
     str   out  = {0};

@@ -1,3 +1,6 @@
+/*
+ * Accept string and return parsed, formatted and contatenated string
+ */
 #include "arena.h"
 #include "range.h"
 #include "str.h"
