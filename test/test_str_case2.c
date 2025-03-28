@@ -31,7 +31,7 @@ Str parse_and_format(Str src, Arena temp, Arena* perm)
             // Parse (note -> using new temp for each loop)
             Str found = str_fmt(&temp_loop, "Found l: %d\n", i); // uses STR_MAXLEN = 1024
 
-            // Store
+            // Store (not checking capacity as it has been lost)
             memcpy(&tmp.buf[tmp.len], found.buf, found.len);
             tmp.len += found.len;
         }
