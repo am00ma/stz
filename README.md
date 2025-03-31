@@ -2,6 +2,13 @@
 
 Use cases for arenas and strings in C.
 
+Most functions copied from:
+- [https://nullprogram.com/](https://nullprogram.com/)
+- [https://github.com/skeeto](https://github.com/skeeto)
+
+Other beautiful style:
+- [https://github.com/glouw](https://github.com/glouw)
+
 ## Use cases
 
 | no  | file                      | desc                                                                                                   |
