@@ -1,4 +1,4 @@
-/* Using a temporary arena per frame */
+/* Using threads to load files async */
 
 #include "arena.h"   // Arena, new, arena_new, arena_print
 #include "range.h"   // RANGE

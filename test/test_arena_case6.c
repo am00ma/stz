@@ -16,6 +16,7 @@ void process_frame(i32 i, Arena temp)
 
     FOR(a, j) a.buf[j] = 65 + j + (i % 10);
 
+    // Print at intervals
     if (!((i + 1) % 128)) printf("%d: %.*s\n", i, (int)a.len, a.buf);
 }
 
@@ -24,7 +25,7 @@ int main()
     // Create arena
     Arena temp = arena_new(1024);
 
-    // Process frame (would require much greater mem if allocated to perm)
+    // Process frame (passing by value, so same arena each time)
     RANGE(i, 1024) process_frame(i, temp);
 
     // Print used space

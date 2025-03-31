@@ -1,6 +1,6 @@
 /* Growing two arrays dynamically
  *
- * TODO: Can we avoid copy, yet keep dynamic nature?
+ * TODO: Can we avoid copy, yet keep dynamic nature and not use max sizes?
  * */
 
 #include "arena.h"
