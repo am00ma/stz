@@ -1,6 +1,9 @@
 /* Growing two arrays dynamically
  *
  * TODO: Can we avoid copy, yet keep dynamic nature and not use max sizes?
+ *
+ * I think we have to use dynamic arrays, i.e. grow by twice, etc.
+ *
  * */
 
 #include "arena.h"
@@ -19,10 +22,21 @@ typedef struct {
     str b;
 } pair;
 
-void str_copy(str* dst, str src)
+str str_empty(isize len, Arena* a) { return (str){.buf = new (a, char, len)}; }
+
+str str_copy(str src, Arena* a)
 {
-    if (dst->len != src.len) return;
-    memcpy(dst->buf, src.buf, dst->len);
+    if (!src.len) return src;
+    str dst = {.buf = new (a, char, src.len), .len = src.len};
+    memcpy(dst.buf, src.buf, dst.len);
+    return dst;
+}
+
+str str_concat(str head, str tail, Arena* a)
+{
+    if ((char*)(head.buf + head.len) != a->beg) str_copy(head, a);
+    str_copy(tail, a);
+    return (str){.buf = head.buf, .len = head.len + tail.len};
 }
 
 constexpr isize MAXLEN = 256;
@@ -33,6 +47,7 @@ pair grow_arrays_with_temp(Arena temp, Arena* perm)
     pair p = {0};
     str  a = {.buf = new (&temp, char, MAXLEN), .len = 0};
     str  b = {.buf = new (&temp, char, MAXLEN), .len = 0};
+
     RANGE(i, 10)
     {
         a.buf[i] = 65 + i;
@@ -42,10 +57,8 @@ pair grow_arrays_with_temp(Arena temp, Arena* perm)
     }
 
     // Copy to perm
-    p.a = (str){.buf = new (perm, char, a.len), .len = a.len};
-    p.b = (str){.buf = new (perm, char, b.len), .len = b.len};
-    str_copy(&p.a, a);
-    str_copy(&p.b, b);
+    p.a = str_copy(a, perm);
+    p.b = str_copy(a, perm);
 
     return p;
 }
@@ -78,15 +91,18 @@ void pair_print(pair* p)
 int main()
 {
     // Create arena
-    Arena perm1 = arena_new(1024);
-    Arena perm2 = arena_new(1024);
-    Arena temp  = arena_new(1024);
+    Arena perm = arena_new(1024);
+    Arena temp = arena_new(1024);
 
     pair p = {0};
+
+    Arena perm1 = perm;
 
     p = grow_arrays(&perm1);
     pair_print(&p);
     arena_print("Only perm: perm", &perm1);
+
+    Arena perm2 = perm;
 
     p = grow_arrays_with_temp(temp, &perm2);
     pair_print(&p);
