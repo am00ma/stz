@@ -1,0 +1,12 @@
+compilation_database_dir: .
+output_directory: build/diagrams
+add_compile_flags:
+  - -std=c23
+diagrams:
+  Str:
+    type: class
+    glob:
+      - src/str.c
+    include:
+      context:
+        - Str
