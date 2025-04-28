@@ -12,7 +12,7 @@ CFLAGS   =  -std=c23 -Wall -pedantic -O0 -g
 INCLUDES = -Iinclude
 LDFLAGS  =
 
-CFLAGS  += $(INCLUDES) -DVERSION=\"$(VERSION)\"
+CFLAGS  += -DVERSION=\"$(VERSION)\"
 
 headers    = $(wildcard include/*.h)
 lib_hdr    = $(wildcard src/*.h)
