@@ -14,9 +14,9 @@ LDFLAGS  =
 
 CFLAGS  += -DVERSION=\"$(VERSION)\"
 
-headers    = $(wildcard include/*.h)
-lib_hdr    = $(wildcard src/*.h)
-lib_src    = $(wildcard src/*.c)
+headers    = $(wildcard include/*.h) $(wildcard include/utils/*.h)
+lib_hdr    = $(wildcard src/*.h) $(wildcard src/utils/*.h)
+lib_src    = $(wildcard src/*.c) $(wildcard src/utils/*.c)
 
 test_libs  = $(lib_libs)
 test_src   = $(wildcard test/*.c)
@@ -43,6 +43,7 @@ init:
 	mkdir -p test
 	mkdir -p example
 	mkdir -p build/obj
+	mkdir -p build/obj/utils
 	mkdir -p build/test
 	mkdir -p build/example
 
