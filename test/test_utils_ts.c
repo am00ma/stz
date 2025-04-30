@@ -13,18 +13,10 @@ constexpr i32 MB = 1024 * 1024;
 // For easier concatenation, defining as macro
 #define TS_DIR "/home/x/hub/repos/study/c/libs/parsers/nvim-ts-lsp-dap/data/ts"
 
-int main(int argc, char* argv[])
+int main()
 {
-    if (argc != 2)
-    {
-        printf("USAGE: parse-so FILE_PATH\n");
-        return EXIT_FAILURE;
-    }
-
-    // Only one arg, but use it as Str, not char*
-    Str file_path = {.buf = argv[1], .len = strlen(argv[1])};
-
     // Currently hardcoded, but can be given with args
+    Str   file = Str("include/str.h");
     char* name = "tree_sitter_c";
     char* path = TS_DIR "/c.so";
 
@@ -32,20 +24,20 @@ int main(int argc, char* argv[])
     Arena perm = arena_new(10 * MB);
 
     // Read file (exit on error)
-    auto contentOK = file_read(file_path, &perm);
-    if (contentOK.err) { die(contentOK.err, "Could not read %.*s", pstr(file_path)); }
-    Str content = contentOK.data;
+    auto textOK = file_read(file, &perm);
+    if (textOK.err) { die(textOK.err, "Could not read %.*s", pstr(file)); }
+    Str text = textOK.data;
 
     // Open treesitter .so file (exit on error)
-    TsOK  tsOK = ts_open(name, path);
+    TsOK tsOK = ts_open(name, path);
     if (tsOK.err) { die(tsOK.err, "Could not load %s from %s", name, path); }
     Ts ts = tsOK.data;
 
     // Parse given file
-    ts_parse(&ts, content);
+    ts_parse(&ts, text);
 
     // Recursively print the tree
-    ts_print_named_node(ts.root, content.buf, 0, NULL);
+    ts_print_named_node(ts.root, text.buf, 0, NULL);
     printf("\n");
 
     // Close parser

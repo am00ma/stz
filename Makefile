@@ -3,7 +3,7 @@
 PACKAGE  = stz
 VERSION  = 0.0.1
 
-lib_libs   = -ltree-sitter
+lib_libs   = -ltree-sitter -lSDL2 -lSDL2_image
 prefix     = /usr/local
 extra_dist =  Makefile README.md
 
@@ -73,6 +73,7 @@ install: $(prefix)/lib/lib$(PACKAGE).a
 $(prefix)/lib/lib$(PACKAGE).a: $(LIBRARY)
 	mkdir -p $(prefix)/include/$(PACKAGE) && cp $(headers) $(prefix)/include/$(PACKAGE)
 	mkdir -p $(prefix)/lib && cp $(LIBRARY) $(prefix)/lib
+	mkdir -p $(prefix)/share/$(PACKAGE) && cp font.png $(prefix)/share/$(PACKAGE)
 
 uninstall:
 	rm -r $(prefix)/include/$(PACKAGE)

@@ -36,7 +36,7 @@ TsOK ts_open(char* name, char* path)
 
     // Create parser and set language
     ts.parser = ts_parser_new();
-    bool bok = ts_parser_set_language(ts.parser, ts.lang());
+    bool bok  = ts_parser_set_language(ts.parser, ts.lang());
     if (!bok)
     {
         error("Could not set language");
