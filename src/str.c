@@ -62,10 +62,37 @@ Str str_fmtn(Arena* a, isize len, char const* fmt, ...)
     return s;
 }
 
-// Check if equal to string literal
-bool str_equal(Str* s, char* c)
+bool str_equal(Str s, Str c)
 {
-    isize len = strlen(c);
-    if (len != s->len) return false;
-    return !memcmp(s->buf, c, len);
+    if (c.len != s.len) return false;
+    if (!c.len) return true; // Empty strings are equal
+    return !memcmp(s.buf, c.buf, c.len);
+}
+
+#define FNV_32_OFFSET_BASIS 2166136261
+#define FNV_32_PRIME        16777619
+
+u32 str_hash32(Str s)
+{
+    u32 h = FNV_32_OFFSET_BASIS;
+    for (isize i = 0; i < s.len; i++)
+    {
+        h ^= s.buf[i] & 255;
+        h *= FNV_32_PRIME;
+    }
+    return h;
+}
+
+#define FNV_64_OFFSET_BASIS 0xcbf29ce484222325
+#define FNV_64_PRIME        1099511628211
+
+u64 str_hash64(Str s)
+{
+    u64 h = FNV_64_OFFSET_BASIS;
+    for (isize i = 0; i < s.len; i++)
+    {
+        h ^= s.buf[i] & 255;
+        h *= FNV_64_PRIME;
+    }
+    return h;
 }

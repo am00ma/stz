@@ -37,4 +37,10 @@ constexpr int STR_MAXLEN = 1024;
 Str str_fmtn(Arena* a, isize len, char const* fmt, ...);
 
 // Check if equal to string literal
-bool str_equal(Str* s, char* c);
+bool str_equal(Str s, Str c);
+
+// FNV-1a hash (32 bit)
+u32 str_hash32(Str s);
+
+// FNV-1a hash (64 bit)
+u64 str_hash64(Str s);
