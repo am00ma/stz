@@ -3,7 +3,7 @@
 PACKAGE  = stz
 VERSION  = 0.0.1
 
-lib_libs   =
+lib_libs   = -ltree-sitter
 prefix     = /usr/local
 extra_dist =  Makefile README.md
 
