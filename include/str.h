@@ -44,3 +44,14 @@ u32 str_hash32(Str s);
 
 // FNV-1a hash (64 bit)
 u64 str_hash64(Str s);
+
+/* ---------------------------------------------------------------------------
+ * Array of strings, useful for operations like extracting lines with no copy
+ * ------------------------------------------------------------------------- */
+typedef struct {
+    Str*  data;
+    isize len;
+} Strs;
+
+Strs strs_new(isize len, Arena* a);
+Strs strs_lines(Str text, bool ignore_empty, bool substitute_null, Arena* a);

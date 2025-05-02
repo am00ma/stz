@@ -70,8 +70,16 @@ clean:
 
 install: $(prefix)/lib/lib$(PACKAGE).a
 
+headers    = $(wildcard include/*.h) $(wildcard include/utils/*.h)
+lib_hdr    = $(wildcard src/*.h) $(wildcard src/utils/*.h)
+lib_src    = $(wildcard src/*.c) $(wildcard src/utils/*.c)
+
+
 $(prefix)/lib/lib$(PACKAGE).a: $(LIBRARY)
-	mkdir -p $(prefix)/include/$(PACKAGE) && cp $(headers) $(prefix)/include/$(PACKAGE)
+
+	mkdir -p $(prefix)/include/$(PACKAGE) && cp $(wildcard include/*.h) $(prefix)/include/$(PACKAGE)
+	mkdir -p $(prefix)/include/$(PACKAGE)/utils && cp $(wildcard include/utils/*.h) $(prefix)/include/$(PACKAGE)/utils
+
 	mkdir -p $(prefix)/lib && cp $(LIBRARY) $(prefix)/lib
 	mkdir -p $(prefix)/share/$(PACKAGE) && cp font.png $(prefix)/share/$(PACKAGE)
 

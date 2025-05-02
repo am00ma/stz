@@ -3,6 +3,10 @@
 #include <stdio.h>  // vsnprintf
 #include <string.h> // strlen, memcpy, memcmp
 
+/* ---------------------------------------------------------------------------
+ * Lifetimes
+ * ------------------------------------------------------------------------- */
+
 // Allocate space for a new string
 Str str_new(isize len, Arena* a) { return (Str){.buf = new (a, char, len), .len = len}; }
 
@@ -23,6 +27,10 @@ Str str_copy(Str src, Arena* a)
     if (src.len) memcpy(dst.buf, src.buf, src.len);
     return dst;
 }
+
+/* ---------------------------------------------------------------------------
+ * Formatting
+ * ------------------------------------------------------------------------- */
 
 // Get c style null terminated string of maybe unterminated str
 char* str_c(Str s, Arena* a)
@@ -48,6 +56,7 @@ Str str_fmt(Arena* a, char const* fmt, ...)
     return s;
 }
 
+// Specify custrom STR_MAXLEN
 Str str_fmtn(Arena* a, isize len, char const* fmt, ...)
 {
     char* beg = a->beg;
@@ -62,12 +71,20 @@ Str str_fmtn(Arena* a, isize len, char const* fmt, ...)
     return s;
 }
 
+/* ---------------------------------------------------------------------------
+ * Comparizon
+ * ------------------------------------------------------------------------- */
+
 bool str_equal(Str s, Str c)
 {
     if (c.len != s.len) return false;
     if (!c.len) return true; // Empty strings are equal
     return !memcmp(s.buf, c.buf, c.len);
 }
+
+/* ---------------------------------------------------------------------------
+ * Hash (FNV from wikipedia)
+ * ------------------------------------------------------------------------- */
 
 #define FNV_32_OFFSET_BASIS 2166136261
 #define FNV_32_PRIME        16777619
@@ -95,4 +112,52 @@ u64 str_hash64(Str s)
         h *= FNV_64_PRIME;
     }
     return h;
+}
+
+/* ---------------------------------------------------------------------------
+ * Array of strings, useful for operations like extracting lines with no copy
+ * ------------------------------------------------------------------------- */
+
+Strs strs_new(isize len, Arena* a) { return (Strs){.len = len, .data = new (a, Str, len)}; }
+
+Strs strs_lines(Str text, bool ignore_empty, bool substitute_null, Arena* a)
+{
+    // Start position
+    char* start = &text.buf[0];
+
+    // Alloc dynamically (no other user/variable on arena)
+    Strs lines = {.data = new (a, Str, 0)};
+    for (int i = 0; i < text.len; i++)
+    {
+        if (text.buf[i] == '\n')
+        {
+            isize len = &text.buf[i] - start;
+            if (len || !ignore_empty)
+            {
+                new (a, Str); // Extending arena and throwing away ref (exit on oom)
+                lines.data[lines.len] = (Str){.buf = start, .len = len};
+                lines.len++;
+            }
+
+            // Trick like strtok to get char**
+            if (substitute_null) text.buf[i] = '\0';
+
+            // Skip newline
+            start = &text.buf[i] + 1;
+        }
+    }
+
+    // Last line
+    if ((isize)(start - text.buf) <= text.len)
+    {
+        isize len = text.len - (start - text.buf);
+        if (len || !ignore_empty)
+        {
+            new (a, Str);
+            lines.data[lines.len] = (Str){.buf = start, .len = text.len - (start - text.buf)};
+            lines.len++;
+        }
+    }
+
+    return lines;
 }

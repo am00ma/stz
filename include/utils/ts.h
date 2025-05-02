@@ -1,4 +1,4 @@
-#include "str.h"
+#include "../str.h"
 #include <tree_sitter/api.h>
 
 typedef TSLanguage* (*lang_fn)(void);

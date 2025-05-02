@@ -1,6 +1,6 @@
 #pragma once
 
-#include "str.h"
+#include "../str.h"
 
 typedef enum {
     FILE_SUCCESS = 0,
