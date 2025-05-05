@@ -54,4 +54,8 @@ typedef struct {
 } Strs;
 
 Strs strs_new(isize len, Arena* a);
-Strs strs_lines(Str text, bool ignore_empty, bool substitute_null, Arena* a);
+
+/* ---------------------------------------------------------------------------
+ * String functions that return array of strings
+ * ------------------------------------------------------------------------- */
+Strs str_split(Str text, Str delimiter, bool ignore_empty, bool substitute_null, Arena* a);

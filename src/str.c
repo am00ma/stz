@@ -1,4 +1,5 @@
 #include "str.h"    // str
+#include <assert.h> // assert for delimiter
 #include <stdarg.h> // va_list, va_start, va_end
 #include <stdio.h>  // vsnprintf
 #include <string.h> // strlen, memcpy, memcmp
@@ -67,7 +68,7 @@ Str str_fmtn(Arena* a, isize len, char const* fmt, ...)
     s.len = vsnprintf(s.buf, len, fmt, arg);
     va_end(arg);
 
-    a->beg = beg + s.len + 1; // Discard extra and advance
+    a->beg = beg + s.len + 1; // Discard extra and advance BUG: May go one byte over capacity
     return s;
 }
 
@@ -120,23 +121,37 @@ u64 str_hash64(Str s)
 
 Strs strs_new(isize len, Arena* a) { return (Strs){.len = len, .data = new (a, Str, len)}; }
 
-Strs strs_lines(Str text, bool ignore_empty, bool substitute_null, Arena* a)
+/* ---------------------------------------------------------------------------
+ * String functions that return array of strings
+ * ------------------------------------------------------------------------- */
+
+/* Split text into parts on delimiter
+ *
+ *   Strs str_split(Str text, Str delimiter, bool ignore_empty, bool substitute_null, Arena* a);
+ *
+ *   Currently supports only single char delimiter
+ *   When using `substitute_null = true`, crashes if text.buf is string literal
+ * */
+Strs str_split(Str text, Str delimiter, bool ignore_empty, bool substitute_null, Arena* a)
 {
+    // TODO: implement for len > 1
+    assert(delimiter.len == 1);
+
     // Start position
     char* start = &text.buf[0];
 
     // Alloc dynamically (no other user/variable on arena)
-    Strs lines = {.data = new (a, Str, 0)};
+    Strs parts = {.data = new (a, Str, 0)};
     for (int i = 0; i < text.len; i++)
     {
-        if (text.buf[i] == '\n')
+        if (text.buf[i] == delimiter.buf[0])
         {
             isize len = &text.buf[i] - start;
             if (len || !ignore_empty)
             {
                 new (a, Str); // Extending arena and throwing away ref (exit on oom)
-                lines.data[lines.len] = (Str){.buf = start, .len = len};
-                lines.len++;
+                parts.data[parts.len] = (Str){.buf = start, .len = len};
+                parts.len++;
             }
 
             // Trick like strtok to get char**
@@ -154,10 +169,10 @@ Strs strs_lines(Str text, bool ignore_empty, bool substitute_null, Arena* a)
         if (len || !ignore_empty)
         {
             new (a, Str);
-            lines.data[lines.len] = (Str){.buf = start, .len = text.len - (start - text.buf)};
-            lines.len++;
+            parts.data[parts.len] = (Str){.buf = start, .len = text.len - (start - text.buf)};
+            parts.len++;
         }
     }
 
-    return lines;
+    return parts;
 }

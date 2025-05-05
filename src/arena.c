@@ -1,5 +1,6 @@
-#include "arena.h"  // Arena
-#include "abort.h"  // oom
+#include "arena.h" // Arena
+#include "abort.h" // oom
+#include "types.h"
 #include <stdio.h>  // printf
 #include <stdlib.h> // malloc
 #include <string.h> // memset
@@ -12,6 +13,8 @@ Arena arena_new(isize cap)
     a.cap   = a.beg ? cap : 0;
     return a;
 }
+
+Arena arena_from_buf(char buf[], isize len) { return (Arena){.beg = buf, .end = buf + len, .cap = len}; }
 
 char* arena_alloc(Arena* a, isize objsize, isize align, isize count, int flags)
 {

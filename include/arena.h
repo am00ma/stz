@@ -16,6 +16,8 @@ typedef enum {
 } ArenaFlags;
 
 Arena arena_new(isize cap);
+Arena arena_from_buf(char buf[], isize len);
+
 char* arena_alloc(Arena* a, isize objsize, isize align, isize count, int flags);
 void  arena_print(char* title, Arena* a); // Only function that uses `cap`
 
