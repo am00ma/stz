@@ -1,5 +1,9 @@
 #pragma once
 
+/* Get implementation from:
+ *
+ * /home/x/hub/repos/study/c/references/skeeto/scratch/misc */
+
 #include "str.h"
 
 /* MSI - dynamically allocated, 32 bit hash */

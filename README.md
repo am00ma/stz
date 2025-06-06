@@ -3,10 +3,12 @@
 Use cases for arenas and strings in C.
 
 Most functions copied from:
+
 - [https://nullprogram.com/](https://nullprogram.com/)
 - [https://github.com/skeeto](https://github.com/skeeto)
 
 Other beautiful style:
+
 - [https://github.com/glouw](https://github.com/glouw)
 
 ## Use cases
@@ -26,9 +28,9 @@ Other beautiful style:
 
 ## Units
 
-| no  | file    | size (K) | desc                                       |
-| --- | ------- | -------- | ------------------------------------------ |
-| 1   | abort.o | 5.3      | oom                                        |
-| 2   | arena.o | 6.1      | Arena - new, alloc                         |
-| 3   | str.o   | 7.7      | Str - new, store, equal, fmt               |
-| 4   | buf.o   | 4.8      | Buf - new, join, final                     |
+| no  | file    | size (K) | desc                         |
+| --- | ------- | -------- | ---------------------------- |
+| 1   | abort.o | 5.3      | oom                          |
+| 2   | arena.o | 6.1      | Arena - new, alloc           |
+| 3   | str.o   | 7.7      | Str - new, store, equal, fmt |
+| 4   | buf.o   | 4.8      | Buf - new, join, final       |
