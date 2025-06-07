@@ -3,7 +3,7 @@
 PACKAGE  = stz
 VERSION  = 0.0.1
 
-lib_libs   = -ltree-sitter -lSDL2 -lSDL2_image
+lib_libs   = -ltree-sitter -lSDL2 -lSDL2_image -ltermkey
 prefix     = /usr/local
 extra_dist =  Makefile README.md
 
