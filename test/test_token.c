@@ -2,6 +2,7 @@
 #include "macros.h"
 #include "range.h"
 #include "token.h"
+#include <SDL2/SDL_events.h>
 #include <stdio.h>
 
 typedef enum {
@@ -14,8 +15,10 @@ typedef enum {
     DOT,
     COLON,
     SEMICOLON,
+    SLASH,
 
     // Literals
+    COMMENT,
     IDENTIFIER,
     STRING,
     NUMBER,
@@ -43,6 +46,11 @@ Tokens scanner_scan(Scanner* s, isize maxtokens, Arena* perm)
         case ':': tokens_append(&tokens, s, COLON, perm); break;
         case ';': tokens_append(&tokens, s, SEMICOLON, perm); break;
 
+        case '/':
+            Token t = case_comment_or_slash(s, COMMENT, SLASH, perm);
+            tokens_append_token(&tokens, t, perm);
+            break;
+
         case '\n': s->line++; break;
 
         case ' ':
@@ -61,7 +69,7 @@ Tokens scanner_scan(Scanner* s, isize maxtokens, Arena* perm)
 int main()
 {
     Arena perm = arena_new(16 * 1024 * 1024);
-    Str   text = Str("body {\nwidth: 200px;\nheight:200px\n}");
+    Str   text = Str("// hello\nbody {\nwidth: 200px/500px;\nheight:200px\n}");
 
     Scanner s = {
         .start   = 0,

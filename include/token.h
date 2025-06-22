@@ -63,5 +63,12 @@ char SPeek(Scanner* s);
  * Adding new tokens
  * ------------------------------------------------------------------------- */
 
+void tokens_append_token(Tokens* tokens, Token t, Arena* perm);
 void tokens_append(Tokens* tokens, Scanner* s, int type, Arena* perm);
 void tokens_append_literal(Tokens* tokens, Scanner* s, int type, Str literal, Arena* perm);
+
+/* ---------------------------------------------------------------------------
+ * Common cases
+ * ------------------------------------------------------------------------- */
+
+Token case_comment_or_slash(Scanner* s, int comment, int slash, Arena* perm);
