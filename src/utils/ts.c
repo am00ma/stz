@@ -68,6 +68,8 @@ void ts_print_named_node(TSNode n, char* content, int indent, const char* field)
 {
     char buf[128] = {0};
 
+    if (ts_node_is_null(n)){ error("Null node"); return; }
+
     // Only print named nodes
     if (ts_node_is_named(n))
     {
