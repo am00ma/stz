@@ -3,9 +3,11 @@
 #include "arena.h"
 #include "types.h"
 
-typedef struct {
+typedef struct
+{
     char* buf;
     isize len;
+
 } Str;
 
 // Create new null-terminated string from literal
@@ -48,9 +50,11 @@ u64 str_hash64(Str s);
 /* ---------------------------------------------------------------------------
  * Array of strings, useful for operations like extracting lines with no copy
  * ------------------------------------------------------------------------- */
-typedef struct {
+typedef struct
+{
     Str*  data;
     isize len;
+
 } Strs;
 
 Strs strs_new(isize len, Arena* a);

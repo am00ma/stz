@@ -20,6 +20,7 @@ Arena arena_from_buf(char buf[], isize len);
 
 char* arena_alloc(Arena* a, isize objsize, isize align, isize count, int flags);
 void  arena_print(char* title, Arena* a); // Only function that uses `cap`
+void  arena_free(Arena* a);
 
 #define new(...)                 newx(__VA_ARGS__, new4, new3, new2)(__VA_ARGS__)
 #define newx(a, b, c, d, e, ...) e

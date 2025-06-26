@@ -14,6 +14,15 @@ Arena arena_new(isize cap)
     return a;
 }
 
+void arena_free(Arena* a)
+{
+    char* beg = a->end - a->cap;
+    free(beg);
+    a->beg = 0;
+    a->end = 0;
+    a->cap = 0;
+}
+
 Arena arena_from_buf(char buf[], isize len) { return (Arena){.beg = buf, .end = buf + len, .cap = len}; }
 
 char* arena_alloc(Arena* a, isize objsize, isize align, isize count, int flags)

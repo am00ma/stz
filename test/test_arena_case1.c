@@ -106,5 +106,8 @@ int main()
 
     arena_print("life_main: after zi", &life_main);
 
+    // Unnecessary
+    arena_free(&life_main);
+
     return 0;
 }
